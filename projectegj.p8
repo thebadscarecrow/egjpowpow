@@ -2,17 +2,117 @@ pico-8 cartridge // http://www.pico-8.com
 version 14
 __lua__
 
+-- charaters
+player = {
+ x = 0,
+ y = 0,
+ turnover = false,
+ sprite = 50,
+ speed = 1,
+ width = 1,
+ height = 1,
+ life = 3
+}
+
+nurse = {
+ x = 0,
+ y = 0,
+ turnover = false,
+ sprite = 52,
+ speed = 1,
+ width = 1,
+ height = 1,
+ life = 1
+}
+
+levelone = {
+ xmin = 0,
+ xmax = 32,
+ ymin = 0,
+ ymax = 32
+}
+
+nurses = {}
+
+-- moving char
+function move(level) 
+ -- to the left
+ if btn(0) then 
+  if player.x >= level.xmin then
+   player.x -= player.speed
+  else 
+   player.x = 0
+  end
+  player.turnover = true
+  switchplayersprite(player)
+ end
+
+ -- to the right
+ if btn(1) then
+  if player.x <= level.xmax then
+   player.x += player.speed
+  else
+   player.x = 0
+  end
+  player.turnover = false
+  switchplayersprite(player)
+ end
+
+ -- to the top
+ if btn(2) then
+  if player.y >= level.ymin then
+   player.y -= player.speed
+  else
+   player.y = 0
+  end
+  switchsprite(player)
+ end
+
+ -- to the bottom
+ if btn(3) then
+  if player.y <= level.ymax then
+   player.y += player.speed
+  else
+   player.y = 0
+  end
+  switchsprite(player)
+ end
+end
+
+-- sprites switching
+function switchplayersprite(character)
+ if character.sprite == 50 then
+  character.sprite = 49
+ else 
+  character.sprite = 50
+ end
+end
+
+function switchennemysprite(ennemy)
+ if ennemy.sprite == 50 then
+  ennemy.sprite = 49
+ else 
+  ennemy.sprite = 50
+ end
+end
+
+function level_one()
+ camera(player.x - 64 < 0 and  0 or player.x - 64, 0)
+ map(0, 0, 0, 0, 31, 16) 
+ spr(player.sprite, player.x, player.y, player.width, player.height, player.turnover)
+end
+
 function _init()
 
 end
 
 function _update60()
- 
+ move()
 end
 
 function _draw()
  cls()
- print("hello world")
+ level_one()
 end
 
 
