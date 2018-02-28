@@ -60,6 +60,7 @@ levelfour = {
 }
 
 furnitures = {}
+lives = {}
 
 nurses = {}
 
@@ -206,22 +207,46 @@ function make_furniture(x, y, width, height, a1, a2, b1, b2, sprite)
  return furnitures
 end
 
+function make_life(x, y, width, height, sprite)
+ local life = {}
+ life.x = x
+ life.y = y
+ life.sprite = sprite
+ life.width = width
+ life.height = height
+ add(lives, life)
+ return lives
+end
+
 function draw_furnitures()
  for furniture in all(furnitures) do
   spr(furniture.sprite, furniture.x, furniture.y, furniture.width, furniture.height)
  end
 end
+
+function draw_lives()
+ for life in all(lives) do
+  spr(life.sprite, life.x, life.y, life.width, life.height)
+ end
+end
+
 function level_one()
  --camera(0,0)
  map(0, 0, 0, 0, 16, 16) 
  draw_furnitures()
  spr(player.sprite, player.x, player.y, player.width, player.height, player.turnover)
+
+ draw_lives()
 end
 
 function _init()
 -- bathtub
  make_furniture(0, 112, 2, 2, 32, 47, 96, 111, 196)
  make_furniture(64, 112, 2, 2, 48, 56, 96, 111, 198)
+ make_life(2, 2, 1, 1, 66)
+ make_life(12, 2, 1, 1, 66)
+ make_life(22, 2, 1, 1, 66)
+
 end
 
 function _update60()
@@ -233,8 +258,6 @@ function _draw()
  cls()
  level_one()
 
- print(player.x,64,64,0)
- print(player.y,64,34,2)
  if collisionsone() then
   print("true", 64,24,8)
  else
