@@ -7,7 +7,6 @@ player = {
  x = 0,
  y = 0,
  turnover = false,
- moving = false,
  sprite = 1,
  speed = 1,
  width = 2,
@@ -27,77 +26,45 @@ nurse = {
 }
 
 levelone = {
- active = true,
  xmin = 0,
- xmax = 64,
+ xmax = 32,
  ymin = 0,
- ymax = 64
+ ymax = 32
 }
-
-leveltwo = {
- active = false,
- xmin = 0,
- xmax = 64,
- ymin = 0,
- ymax = 64
-}
-
-levelthree = {
- active = false,
- xmin = 0,
- xmax = 64,
- ymin = 0,
- ymax = 64
-}
-
-levelfour = {
- active = false,
- xmin = 0,
- xmax = 64,
- ymin = 0,
- ymax = 64
-}
-
-
-
 
 nurses = {}
 
--- button : moving char
--- todo : add hitboxes -> remplacer if player.x etc par des fonctions (lvl one, 2, 3, 4) avec gestion des hitboxes
+-- moving char
 function move(level) 
  -- to the left
  if btn(0) then 
   if player.x >= level.xmin then
    player.x -= player.speed
   else 
-   player.x = player.x
+   player.x = 0
   end
-  player.turnover = false
-  player.moving = true
+  player.turnover = true
   switchplayersprite(player)
  end
 
  -- to the right
  if btn(1) then
-  if player.x < level.xmax then
+  if player.x <= level.xmax then
    player.x += player.speed
   else
-   player.x = player.x
+   player.x = 0
   end
-  player.turnover = true
-  player.moving = true
+  player.turnover = false
   switchplayersprite(player)
  end
 
  -- to the top
  if btn(2) then
-  if player.y > level.ymin then
+  if player.y >= level.ymin then
    player.y -= player.speed
   else
-   player.y = player.y
+   player.y = 0
   end
-  player.moving = true
   switchplayersprite(player)
  end
 
@@ -106,48 +73,18 @@ function move(level)
   if player.y <= level.ymax then
    player.y += player.speed
   else
-   player.y = player.y
+   player.y = 0
   end
-  player.moving = true
   switchplayersprite(player)
  end
-end
-
--- buttons : find and shoot
-function find(level)
- if btn(5) then
-
- end
-end
-
-function shoot(level)
- if btn(4) then
-
- end
-end
-
-function roomone(level)
- -- do something
-end
-
-function roomtwo(level)
-
-end
-
-function roomthree(level)
- -- do something
-end
-
-function roomfour(level)
- -- do something
 end
 
 -- sprites switching
 function switchplayersprite(character)
  if character.sprite == 1 then
+  character.sprite = 2
+ elseif character.sprite == 2 then
   character.sprite = 3
- elseif character.sprite == 3 then
-  character.sprite = 5
  else 
   character.sprite = 1
  end
@@ -162,7 +99,7 @@ function switchennemysprite(ennemy)
 end
 
 function level_one()
- camera(player.x - 64 < 0 and  0 or player.x - 64, 0)
+ camera(player.x - 32 < 0 and  0 or player.x - 32, 0)
  map(0, 0, 0, 0, 31, 31) 
  spr(player.sprite, player.x, player.y, player.width, player.height, player.turnover)
 end
@@ -181,8 +118,7 @@ function _draw()
 end
 
 
-__gfx__
-00000000000005555550000000000555555000000000055555500000000000aaaaaa00000aaaaaaa000000000000000000000000000000000000099999990000
+__gfx__00000000000005555550000000000555555000000000055555500000000000aaaaaa00000aaaaaaa000000000000000000000000000000000000099999990000
 0000000000005555555000000000555555500000000055555550000000000aaaaaaa0000aaaaaaaaa00000000000000000000000000000000000999ff9990000
 0070070000005fffff56000000005fffff56000000005fffff56000000000ac7fc7a0000aaaaaaaaa000000000000000000000000000000000009ffffff90000
 00077000000f555f555f6700000f555f555f6700000f555f555f670000000afffffa0000a7cff7caa00000000000000000000000000000000000977667790000
