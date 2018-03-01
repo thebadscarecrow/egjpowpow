@@ -1,0 +1,110 @@
+--start screen
+
+text0 = "2048 - eman's room "
+text1 = "eman is in this retirement home since 3 years now"
+text2 = "everytime he wake up, he can remember"
+text3 = "what happened during the night."
+text4 = "no dreams, no nightmares, nothing except"
+text5 = "an increasing exhaust day after day"
+text6 = "how is it possible ? He's only 35..."
+text7 = "something strange happen in this retirement home"
+text8 = "what was that ?"
+text9 = "let's get out of this room"
+text10 = "press x to start"
+
+
+--interaction text
+
+textint1 = "it's close"
+textint2 = "the door is lock!"
+textint3 = "treatment in progress; do not disturb"
+textint4 = "yes !"
+textint4 = "no !"
+
+
+--lvl1
+
+lv1t1 = "i need to find the key to leave my room."
+lv1t2 = "it's not here ... "
+lv1t3 = "not now!"
+lv1t4 = "i find it !"
+
+--lv1endscreen
+
+les1text0 = "ok, i finally leave my room!"
+les1text1 = "now, i have to find hana."
+les1text2 = "but there's to many nurses"
+les1text3 = "and i'm not suppose to be here at this time"
+les1text4 = "hmm, i have a bad feeling..."
+les1text5 = "let's go!"
+
+
+--lvl2
+
+lv2t1 = "what ?!"
+lv2t2 = "hana ?!"
+lv2t3 = "why are you strap to your bed ?!"
+lv2t4 = "wake up !"
+lv2t5 = "mr.eman ! why you're here ?"
+lv2t6 = "why she's strap ?!"
+lv2t7 = "*he wasn't supposed to see that...*"
+lv2t8 = "*let's kill him !*" 
+lv2t9 = "mr, please, follow me."
+lv2t10 = "no, i won't !"
+lv2t11 = "there's something weird here, and i'll find what !"
+lv2t12 = "ooh but you'll don't be alive enough time to say something !"
+lv2t13 = "what the ... !"
+
+--lv2end screen
+
+
+les2text0 = "the nurses turn into horrible monsters"
+les2text1 = "they're GMO !"
+les2text2 = "they looks like humain mix with baku, a japanese yokai"
+les2text3 = "which feed itself with dreams and nightmares !"
+les2text4 = "this is the secret of this place!"
+les2text5 = "eman fight them and set free hana!"
+
+--lvl3
+
+lv3t1 = "hana, we need to leave this place quickly !"
+lv3t2 = "yes, i don't want to stay here !"
+lv3t2 = "but look, they block the way..."
+lv3t4 = "let's fight them together!"
+
+--lv3end screen
+
+les3text1 = "ok, where close to the exit"
+les3text1 = "keep going!"
+
+--lv4
+
+lv4t1 = "what's this room ?"
+lv4t2 = "well, i think it's our final ordeal."
+
+--lv4end screen
+
+les4text1 = "we're finally out of this horrible place !"
+les4text1 = "hana, your everything to me....................................
+
+
+
+function _init()
+
+end
+
+function _update60()
+ 
+end
+
+function _draw()
+ cls()
+ startscreen()
+end
+
+function startscreen()
+cls (0)
+
+print (text0, 64 - (#text0 * 2), 56, 7)
+
+end
