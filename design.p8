@@ -1,7 +1,49 @@
 pico-8 cartridge // http://www.pico-8.com
 version 8
 __lua__
+ctime = {
+	m = 0,
+	s = 10,
+	ms = 0
+}
 
+endtext = "you failed"
+
+function endscreen()
+	cls()
+	
+	print (endtext, 64 - (#endtext * 2), 56, 7)
+	
+end
+
+function time_manager()
+ ctime.ms  += 1/30
+ if (ctime.ms >= 1) then
+ 	ctime.ms = 0
+ 	ctime.s -= 1
+		if (ctime.s >= 10) then
+			ctime.s = 0
+			ctime.m -=1
+		end
+	end
+	
+	
+end
+
+
+function _update()
+
+	time_manager()
+	if (ctime.s <= 0) then
+		endscreen()
+	end	
+end
+
+function _draw()
+ cls()
+ print(ctime.s)
+ 
+end
 __gfx__
 00000000000005555550000000000555555000000000055555500000000000aaaaaa000000000000000000000000000006666660000000000000099999990000
 0000000000005555555000000000555555500000000055555550000000000aaaaaaa000000000000000000000000000066666666000000000000999ff9990000
