@@ -2,6 +2,11 @@ pico-8 cartridge // http://www.pico-8.com
 version 14
 __lua__
 
+ctime = { 
+ s = 30,
+ ms = 0
+}
+
 -- charaters
 player = {
  x = 33,
@@ -29,7 +34,7 @@ nurse = {
 }
 
 levelone = {
- active = true,
+ active = false,
  xmin = 0,
  xmax = 64,
  ymin = 0,
@@ -145,7 +150,7 @@ end
 -- buttons : find and shoot
 function find()
  if btn(5) then
-  if (levelone.active)
+  if levelone.active then
    if player.x <= 5 and player.y >= 100 then 
     player.find = true
     levelone.succeed = true
@@ -187,6 +192,7 @@ function check_collision(fur)
  end
  return true
 end
+
 -- sprites switching
 function switchplayersprite(character)
  if character.sprite == 1 then
@@ -241,23 +247,86 @@ function draw_lives()
  end
 end
 
+function time_manager()
+ ctime.ms  += 1/30
+ if (ctime.ms >= 1) then
+  ctime.ms = 0
+  ctime.s -= 1
+  if (ctime.s <= 0) then
+   return true
+  end
+ end
+ return false
+end
+
+function intro()
+ ctime.ms  += 1/30
+ cls()
+ if (ctime.ms >= 0 and ctime.ms <= 3) then
+  print(text0, 64 - (#text0 * 2), 56, 7)
+ elseif (ctime.ms >= 3 and ctime.ms <= 7) then
+  cls()
+  print(text1a, 64 - (#text1a * 2), 56, 7)
+  print(text1b, 64 - (#text1b * 2), 66, 7)
+  --ctime.s -= 1
+ elseif (ctime.ms >= 7 and ctime.ms <= 10) then
+  cls()
+  print(text2a, 64 - (#text2a * 2), 56, 7)
+  print(text2b, 64 - (#text2b * 2), 66, 7)
+ elseif (ctime.ms >= 10 and ctime.ms <= 15) then
+  cls()
+  print(text3, 64 - (#text3 * 2), 56, 7)
+ elseif (ctime.ms >= 15 and ctime.ms <= 20) then
+  cls()
+  print(text4a, 64 - (#text4a * 2), 56, 7)
+  print(text4b, 64 - (#text4b * 2), 66, 7)
+ elseif (ctime.ms >= 20 and ctime.ms <= 25) then
+  cls()
+  print(text5a, 64 - (#text5a * 2), 56, 7)
+  print(text5b, 64 - (#text5b * 2), 66, 7)
+ elseif (ctime.ms >= 25 and ctime.ms <= 30) then
+  cls()
+  print(text6a, 64 - (#text6a * 2), 56, 7)
+  print(text6b, 64 - (#text6b * 2), 66, 7)
+ elseif (ctime.ms >= 30 and ctime.ms <= 35) then
+  cls()
+  print(text7a, 64 - (#text7a * 2), 56, 7)
+  print(text7b, 64 - (#text7b * 2), 66, 7)
+ elseif (ctime.ms >= 35 and ctime.ms <= 40) then
+  cls()
+  -- music here
+
+  print(text8, 64 - (#text8 * 2), 56, 7)
+ elseif (ctime.ms >= 40 and ctime.ms <= 45) then
+  cls()
+  print(text9, 64 - (#text9 * 2), 56, 7)
+ else
+  return true
+ end
+ return false  
+end
+
 function level_one()
  --camera(0,0)
- map(0, 0, 0, 0, 16, 16) 
+ -- bathtub
+ make_furniture(0, 112, 2, 2, 32, 47, 96, 111, 196)
+ make_furniture(64, 112, 2, 2, 48, 56, 96, 111, 198)
+ make_life(2, 2, 1, 1, 66)
+ make_life(12, 2, 1, 1, 66)
+ make_life(22, 2, 1, 1, 66)
+ map(0, 0, 0, 0, 16, 16)
  draw_furnitures()
  spr(player.sprite, player.x, player.y, player.width, player.height, player.turnover)
 
  draw_lives()
 end
 
-function _init()
--- bathtub
- make_furniture(0, 112, 2, 2, 32, 47, 96, 111, 196)
- make_furniture(64, 112, 2, 2, 48, 56, 96, 111, 198)
- make_life(2, 2, 1, 1, 66)
- make_life(12, 2, 1, 1, 66)
- make_life(22, 2, 1, 1, 66)
+function level_two()
+ map(10 , 0, 25, 0, 16, 16)
+end
 
+function _init()
+ 
 end
 
 function _update60()
@@ -267,17 +336,114 @@ end
 
 function _draw()
  cls()
- level_one()
-
-  print(player.x, 64, 64, 1)
-  print(player.y, 64, 74, 2)
-
- if player.find == true then
-  print("yipee!", 64,34,3)
-  else 
-   print("uhuh",64,34,3)
+ if intro() then
+  cls()
+  print(text10, 64 - (#text10 * 2), 56, 7)
+ end
+ if (levelone.active) level_one()
+ if levelone.succeed == true then
+  cls()
+  levelone.active = false
+  leveltwo.active = true
+   level_two()
+  
  end
 end
+
+--start screen
+
+text0 = "2048 - eman's room "
+text1a = "eman is in this retirement home"
+text1b = "since 3 years now"
+text2a = "everytime he wakes up,"
+text2b = " he can't remember"
+text3 = "what happened during the night."
+text4a = "no dreams, no nightmares,"
+text4b = "nothing except"
+text5a = "an increasing exhaust"
+text5b = "day after day"
+text6a = "how is it possible?"
+text6b = "he's only 35..."
+text7a = "something strange happen"
+text7b = "in this retirement home"
+text8 = "what was that?"
+text9 = "let's get out of this room"
+text10 = "press x to start"
+
+
+--interaction text
+
+textint1 = "it's close"
+textint2 = "the door is lock!"
+textint3 = "treatment in progress; do not disturb"
+textint4 = "yes !"
+textint4 = "no !"
+
+
+--lvl1
+
+lv1t1 = "i need to find the key to leave my room."
+lv1t2 = "it's not here ... "
+lv1t3 = "not now!"
+lv1t4 = "i find it !"
+
+--lv1endscreen
+
+les1text0 = "ok, i finally leave my room!"
+les1text1 = "now, i have to find hana."
+les1text2 = "but there's to many nurses"
+les1text3 = "and i'm not suppose to be here at this time"
+les1text4 = "hmm, i have a bad feeling..."
+les1text5 = "let's go!"
+
+
+--lvl2
+
+lv2t1 = "what ?!"
+lv2t2 = "hana ?!"
+lv2t3 = "why are you strap to your bed ?!"
+lv2t4 = "wake up !"
+lv2t5 = "mr.eman ! why you're here ?"
+lv2t6 = "why she's strap ?!"
+lv2t7 = "*he wasn't supposed to see that...*"
+lv2t8 = "*let's kill him !*" 
+lv2t9 = "mr, please, follow me."
+lv2t10 = "no, i won't !"
+lv2t11 = "there's something weird here, and i'll find what !"
+lv2t12 = "ooh but you'll don't be alive enough time to say something !"
+lv2t13 = "what the ... !"
+
+--lv2end screen
+
+
+les2text0 = "the nurses turn into horrible monsters"
+les2text1 = "they're gmo !"
+les2text2 = "they looks like humain mix with baku, a japanese yokai"
+les2text3 = "which feed itself with dreams and nightmares !"
+les2text4 = "this is the secret of this place!"
+les2text5 = "eman fight them and set free hana!"
+
+--lvl3
+
+lv3t1 = "hana, we need to leave this place quickly !"
+lv3t2 = "yes, i don't want to stay here !"
+lv3t2 = "but look, they block the way..."
+lv3t4 = "let's fight them together!"
+
+--lv3end screen
+
+les3text1 = "ok, where close to the exit"
+les3text1 = "keep going!"
+
+--lv4
+
+lv4t1 = "what's this room ?"
+lv4t2 = "well, i think it's our final ordeal."
+
+--lv4end screen
+
+les4text1 = "we're finally out of this horrible place !"
+les4text1 = "hana, you're everything to me...................................."
 
 __gfx__
 00000000000005555550000000000555555000000000055555500000000000aaaaaa000000000000000000000000000006666660000000000000099999990000
